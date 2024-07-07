@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Asincronía con Callbacks</title>
+        <style>
+            #loading {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Asincronía con Callbacks</h1>
+        <div id="loading">Cargando datos...</div>
+        <ul id="lista"></ul>
+
+        <script>
+            function obtenerDatos(callback) {
+                document.getElementById("loading").style.display = "block";
+
+                var xhr = new XMLHttpRequest();
+                xhr.open(
+                    "GET",
+                    "https://jsonplaceholder.typicode.com/users",
+                    true
+                );
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        document.getElementById("loading").style.display =
+                            "none";
+                        if (xhr.status === 200) {
+                            var data = JSON.parse(xhr.responseText);
+                            callback(null, data);
+                        } else {
+                            document.getElementById("loading").innerText =
+                                "Error cargando datos.";
+                            callback(new Error(xhr.statusText), null);
+                        }
+                    }
+                };
+                xhr.send();
+            }
+
+            function mostrarDatos(error, datos) {
+                //error=true
+                if (error) {
+                    alert("Error cargando datos. Dj_a");
+                    return;
+                }
+                const lista = document.getElementById("lista");
+                datos.forEach((dato) => {
+                    const item = document.createElement("li");
+                    item.textContent = `Nombre: ${dato.name}, Email: ${dato.email}`;
+                    lista.appendChild(item);
+                });
+            }
+
+            function tarea_1(callback) {
+                setTimeout(() => {
+                    console.log("Tarea 1 completada");
+                    callback();
+                }, 2000);
+            }
+
+            function tarea_2(callback) {
+                setTimeout(() => {
+                    console.log("Tarea 2 completada");
+                    callback();
+                }, 2000);
+            }
+
+            function tarea_3(callback) {
+                setTimeout(() => {
+                    console.log("Tarea 3 completada");
+                    callback();
+                }, 2000);
+            }
+
+            tarea_1(() => {
+                tarea_2(() => {
+                    tarea_3(() => {
+                        console.log("Todas las tareas completadas");
+                    });
+                });
+            });
+
+            obtenerDatos(mostrarDatos);
+        </script>
+
+    </body>
+</html>
