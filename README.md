@@ -1,4 +1,4 @@
-# Trabajo Práctico 2.1 - Programación en JavaScript
+# Trabajo Práctico 2.1 - AGUIRRE DANTE JESÚS
 
 El objetivo de este trabajo es profundizar en los temas de **programación orientada a objetos** y **asincronía** en JavaScript.
 
